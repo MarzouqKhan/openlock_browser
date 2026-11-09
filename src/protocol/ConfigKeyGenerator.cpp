@@ -12,6 +12,7 @@
 #include <QDebug>
 
 #include <algorithm>
+#include <cmath>
 
 namespace openlock {
 
