@@ -45,8 +45,12 @@ bool Config::loadFromFile(const QString& path)
             QByteArray peek = SEBConfigParser::tryOuterGzip(data);
             if (!peek.isEmpty()) working = peek;
         }
+        if (working.size() >= 4 && working.left(4) == "pwcc") {
+            emit configError("Certificate-encrypted SEB files (pwcc) are not supported: " + path);
+            return false;
+        }
         bool needsPassword = working.size() >= 4 &&
-                            (working.left(4) == "pswd" || working.left(4) == "pwcc");
+                            working.left(4) == "pswd";
 
         QByteArray xmlData;
         if (needsPassword) {
