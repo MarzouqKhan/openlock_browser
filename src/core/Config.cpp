@@ -240,11 +240,11 @@ static QVariant parsePlistValue(QXmlStreamReader& xml, int depth)
     if (elemName == QStringLiteral("date"))
         return QDateTime::fromString(xml.readElementText(), Qt::ISODate);
     if (elemName == QStringLiteral("dict")) {
-        if (depth >= 64) { xml.skipCurrentElement(); return QVariantMap{}; }
+        if (depth >= 64) { xml.raiseError(QStringLiteral("plist nesting exceeds 64 levels")); return QVariantMap{}; }
         return parsePlistDict(xml, depth + 1);
     }
     if (elemName == QStringLiteral("array")) {
-        if (depth >= 64) { xml.skipCurrentElement(); return QVariantList{}; }
+        if (depth >= 64) { xml.raiseError(QStringLiteral("plist nesting exceeds 64 levels")); return QVariantList{}; }
         return parsePlistArray(xml, depth + 1);
     }
     xml.readElementText();
