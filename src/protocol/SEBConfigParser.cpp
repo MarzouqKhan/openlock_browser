@@ -189,8 +189,14 @@ QByteArray SEBConfigParser::decryptSebFile(const QByteArray& data, const QString
         if (decrypted.isEmpty()) return {};
 
         // Inner gzip decompress
-        QByteArray innerDecomp = tryOuterGzip(decrypted);
-        return innerDecomp.isEmpty() ? decrypted : innerDecomp;
+        if (decrypted.size() >= 2 &&
+            static_cast<unsigned char>(decrypted[0]) == 0x1f &&
+            static_cast<unsigned char>(decrypted[1]) == 0x8b) {
+            QByteArray innerDecomp = tryOuterGzip(decrypted);
+            if (innerDecomp.isEmpty()) return {};
+            return innerDecomp;
+        }
+        return decrypted;
     }
 
     if (prefix == "plnd") {
