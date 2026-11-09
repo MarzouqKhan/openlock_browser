@@ -102,7 +102,7 @@ QString ConfigKeyGenerator::settingsToSebJson(const QVariantMap& settings) const
     std::sort(keys.begin(), keys.end(), [](const QString& a, const QString& b) {
         int cmp = a.compare(b, Qt::CaseInsensitive);
         if (cmp != 0) return cmp < 0;
-        return a < b;  // lowercase-first tie-break
+        return b < a;  // uppercase-last tie-break
     });
 
     bool first = true;
