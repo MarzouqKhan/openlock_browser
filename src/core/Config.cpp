@@ -193,6 +193,7 @@ static QVariantList parsePlistArray(QXmlStreamReader& xml, int depth = 0);
 static QVariantMap parsePlistDict(QXmlStreamReader& xml, int depth)
 {
     QVariantMap map;
+    bool haveKey = false;
     QString currentKey;
     while (!xml.atEnd()) {
         xml.readNext();
@@ -202,11 +203,16 @@ static QVariantMap parsePlistDict(QXmlStreamReader& xml, int depth)
             continue;
         if (xml.name() == QStringLiteral("key")) {
             currentKey = xml.readElementText();
-        } else if (!currentKey.isEmpty()) {
+            haveKey = true;
+        } else if (haveKey) {
             QVariant value = parsePlistValue(xml, depth);
             if (!(value.typeId() == QMetaType::QVariantMap && value.toMap().isEmpty()))
                 map.insert(currentKey, value);
+            haveKey = false;
             currentKey.clear();
+        } else {
+            xml.raiseError(QStringLiteral("plist value element with no preceding key"));
+            break;
         }
     }
     return map;
