@@ -225,7 +225,7 @@ int main(int argc, char* argv[])
                     for (int p : pids) pidStrs.append(QString::number(p));
                     msg += QString::fromUtf8(_("  \u2022 %1 (PIDs: %2)\n")).arg(it.key(), pidStrs.join(", "));
                 } else {
-                    msg += QString::fromUtf8(_("  \u2022 %1 (PID: %2)\n")).arg(it.key()).arg(pids.first());
+                    msg += QString::fromUtf8(_("  • %1 (PID: %2)\n")).arg(it.key(), QString::number(pids.first()));
                 }
             }
             msg += QString::fromUtf8(_("\nClose them and click Retry, or Cancel to exit."));
