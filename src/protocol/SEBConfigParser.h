@@ -12,11 +12,12 @@ namespace openlock {
 class SEBConfigParser {
 public:
     // Decrypt and decompress a .seb file, returning raw XML plist bytes
-    // Handles: outer gzip, pswd/pwcc prefix (RNCryptor v3), plnd prefix, inner gzip, and raw XML
+    // Handles: outer gzip, pswd prefix (RNCryptor v2/v3), plnd prefix, inner gzip, and raw XML
+    // pwcc (certificate-encrypted) is detected and rejected with a configError; not decrypted here.
     // Returns empty QByteArray on failure
     static QByteArray decryptSebFile(const QByteArray& data, const QString& password);
 
-    // RNCryptor v3 decryption (exposed for testing).
+    // RNCryptor v2/v3 decryption (exposed for testing).
     static QByteArray decryptRNCryptorV3(const QByteArray& data, const QString& password);
 
     static QByteArray tryOuterGzip(const QByteArray& data);
