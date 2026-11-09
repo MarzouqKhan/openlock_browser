@@ -151,7 +151,6 @@ if(OPENLOCK_DEVELOPER_OPTIONS)
     message(WARNING "OPENLOCK_DEVELOPER_OPTIONS is ON: this binary can run without lockdown. Do not distribute it.")
 endif()
 
-
 # Copy data files to build directory for development runs
 file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/share/openlock)
 configure_file(config/blocklist.json ${CMAKE_BINARY_DIR}/share/openlock/blocklist.json COPYONLY)
